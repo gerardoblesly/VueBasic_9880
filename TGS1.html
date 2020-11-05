@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tugas Vue JS 1</title>
+
+    <!-- Framework -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+
+    <!-- Linking Vue JS -->
+    <script src="vue.js"></script>
+
+    <!-- CSS -->
+    <style>
+        .kotak
+        {
+             background-color: red;
+             color : red;
+        }
+
+        .kotak:hover
+        {
+            background-color: red;
+            color : white;
+        }
+
+        .jarak
+        {
+            margin-top: 20px;
+        }
+
+        .headerku
+        {
+            background-color: darkturquoise;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            margin : 0px;
+        }
+
+        .judul
+        {
+            font-family: fantasy;
+            font-style: bold;
+            text-align: center;
+        }
+
+        .endingan
+        {
+            background-color: darkturquoise;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            margin : 0px;
+            text-align: center;
+        }
+
+        .ngepink
+        {
+            background-color: thistle !important;
+            border-radius: 50px;
+            border: none;
+        }
+
+        .ngepinkdalam
+        {
+            background-color: thistle !important;
+            border-radius: 50px;
+            border: none;
+            margin-left: 250px;
+            margin-right: 250px;
+        
+        }
+
+        .fixing
+        {
+            margin-left: 120px;
+            margin-right: 120px;
+            margin-bottom: 30px;
+        }
+
+        .popup
+        {
+            text-align: center;
+        }
+
+        .pembungkus
+        {
+            padding-left: 200px;
+            padding-right: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="headerku">
+        <h2 class="judul">
+            To Do List 📢
+        </h2>
+    </div>
+
+    <!-- Body -->
+    <div id="app" class="container pembungkus mt-5 mb-5" >
+        <div v-show="showX">
+            <div class="card card-body ngepinkdalam mt-3" v-for="(isi,index) in list" :key="index">
+                <!-- Tampil berdasarkan status -->
+                
+                    <button class="btn btn-sm mb-2 ml-5 mr-5" @click="btnHapus(index)">
+                        <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                    </button>
+                
+                <div v-if="isi.statuspenting == 'Penting'">
+                    <div class="btn btn-danger">
+                        {{isi.statuspenting}}
+                    </div>    
+
+                </div>
+                <div v-else-if="isi.statuspenting == 'Biasa'">
+                    <div class="btn btn-primary">
+                        {{isi.statuspenting}}
+                    </div> 
+
+                </div>
+                <div v-else="isi.statuspenting == 'Tidak Penting'">
+                    <div class="btn btn-success">
+                        {{isi.statuspenting}}
+                    </div> 
+                </div>
+                <div>
+                    <h5>{{ isi.activity }}</h5>
+                    <p>{{ isi.catatan }}</p>
+                </div>
+            </div>
+        </div> 
+
+        <div class="card card-body ngepink mt-5" style="background-color: #D3D3D3;">
+            <div class="container">
+
+                <!-- Form Input -->
+                    
+                <div class="form-group">
+                    <label for="activityM">Apa yang mau kamu kerjakan</label>
+                    <input type="text" class="form-control" v-model="activityM">
+                </div>
+            
+                Penting tidak?
+                <div class="input-group mb-3">
+                    <select class="custom-select" v-model="statusM">
+                        <option value="Penting">Penting</option>
+                        <option value="Biasa">Biasa</option>
+                        <option value="Tidak Penting">Tidak Penting</option>
+                    </select>
+                </div>
+
+            
+                <div class="form-group">
+                    <label for="catatanM">Ada Catatan Penting?</label>
+                    <textarea type="text" class="form-control" v-model="catatanM"></textarea>
+                </div>
+
+                <div>
+                    <button @click="btnReset" class="btn btn-info">Reset</button>
+                    <button @click="btnTambah" class="btn btn-primary">Simpan</button>
+                </div>
+                <!-- End of Form -->
+            </div>
+        </div>
+    </div>
+
+
+    
+    <!-- Footer -->
+    <div id="identity" class="endingan">
+        <h5>💜{{blesly.name}} | {{blesly.npm}} | {{blesly.kelas}}💜</h5>
+    </div>
+
+</body>
+
+<!-- Vue JS -->
+<script>
+    // Vue Data
+    new Vue({
+        el: "#app",
+        data: {
+            activityM : "",
+            statusM : "",
+            catatanM : "",
+            list : [],
+            showX : false,
+        },
+        methods: {
+           btnTambah()
+           {
+                let list = 
+                {
+                    activity: this.activityM,
+                    statuspenting: this.statusM,
+                    catatan: this.catatanM,
+                }
+
+                this.showX = true;
+                this.activityM="";
+                this.statusM="";
+                this.catatanM="";
+                this.list.push(list);
+           },
+
+           btnReset()
+           {
+                this.activityM="";
+                this.statusM="";
+                this.catatanM="";
+           },
+
+           btnHapus(index)
+           {
+            this.list.splice(index,1);
+                if(!this.list.length)
+                {
+                    this.showX=false;
+                }
+           }
+
+        },
+    });
+
+    // Vue Footer
+    new Vue({
+        el: "#identity",
+        data: {
+            blesly:{
+                name:'Gerardo Leonel Blesly Lontaan',
+                npm:'180709880',
+                kelas: 'Kelas E',
+            },
+        },
+    });
+
+</script>
+</html>
