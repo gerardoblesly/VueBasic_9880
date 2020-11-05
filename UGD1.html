@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Unguided Vue JS 1</title>
+
+    <!-- Framework -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- Linking Vue JS -->
+    <script src="vue.js"></script>
+
+    <!-- CSS -->
+    <style>
+        .kotak
+        {
+             background-color: red;
+             color : red;
+        }
+
+        .kotak:hover
+        {
+            background-color: red;
+            color : white;
+        }
+
+        .jarak
+        {
+            margin-top: 20px;
+        }
+
+        .headerku
+        {
+            background-color: thistle;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            margin : 0px;
+        }
+
+        .judul
+        {
+            font-family: Verdana;
+            font-style: bold;
+            text-align: center;
+        }
+
+        .endingan
+        {
+            background-color: thistle;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            margin : 0px;
+            text-align: center;
+        }
+
+        .ngepink
+        {
+            background-color: thistle !important;
+            box-shadow: 30px 15px pink;
+            border-radius: 50px;
+            border: none;
+        }
+
+        .fixing
+        {
+            margin-left: 120px;
+            margin-right: 120px;
+            margin-bottom: 30px;
+        }
+
+        .popup
+        {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="headerku">
+        <h2 class="judul">
+            GAME TEBAK TEBAKAN
+        </h2>
+    </div>
+
+    <!-- Body -->
+    <div id="app" class="container" >
+        <div class="col-md-5 mt-5 mx-auto" > 
+            <div class="card card-body ngepink" style="background-color: #D3D3D3;">
+                <div class="text-center mb-4">
+                    <h3 @click="ngecit">Tebak Disini</h3>                    
+                </div>     
+                
+                <!-- Input Tebakan -->
+                <div class="form-group has-success">
+                    <input type="number" class="form-control" v-model="input" placeholder="Tebak disini" :disabled="status">
+                </div>
+
+                <!-- Button Tebak -->
+                <button class="btn fixing btn-primary" @click="btnTebak" :disabled="status">Tebak</button> 
+
+                <!-- Output Tebakan -->
+                <div v-show="output">
+
+                    <!-- Output JAWABAN SALAH -->
+                    <div class="alert alert-danger" v-if="hasil == 'cobalagi'">
+                        <div class="popup">
+                            SALAH! 
+                            <br>
+                            <button class="btn btn-danger" @click="cobaLagi">Coba Lagi</button>                
+                        </div>
+                    </div>
+
+                    <!-- Output KESEMPATAN HABIS -->
+                    <div class="alert alert-warning" v-else-if="hasil == 'kesempatanHabis'">
+                        <div class="popup">
+                            KAMU KALAH! <br>Jawabanya : {{tebakanya}}
+                            <br>
+                            <button class="btn btn-warning" @click="reset">Main Lagi</button>
+                        </div>
+                    </div> 
+
+                    <!-- Output JAWABAN BENAR        -->
+                    <div class="alert alert-primary" v-else-if="hasil == 'benar'">
+                        <div class="popup">
+                            BENAR!, jawabannya {{ tebakanya }}.
+                            <br>          
+                            <button class="btn btn-primary" @click="reset">Main Lagi</button>
+                        </div>
+                    </div>
+                </div> 
+              
+                <!-- Sisa Kesempatan -->
+                <div class="container jarak ml-5">
+                    Sisa Kesempatan Menebak : <b>{{kesempatan}}</b> kali           
+                </div>
+                                         
+            </div>
+        </div>
+
+        <!-- Running Text -->
+        <div class="container jarak">
+            <div>
+                <center>
+                    <marquee direction="up" scrollamount="10" align="center" behavior="alternate" width="50%">
+                        <marquee direction="right">Cie mikir, pusing yak? 
+                            <div class="kotak">
+                            !!Curang Detected!! Jawabanya {{tebakanya}}.
+                            </div>
+                        </marquee>
+                    </marquee>
+                </center>
+            </div>  
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <!-- Footer -->
+    <div id="identity" class="endingan">
+        <h5>💜{{blesly.name}} | {{blesly.npm}} | {{blesly.kelas}}💜</h5>
+    </div>
+
+</body>
+
+<!-- Vue JS -->
+<script>
+    // Vue Data
+    new Vue({
+        el: "#app",
+        data: {
+            tebakanya: Math.floor(Math.random()*10)+1,
+            input: null,
+            kesempatan: 3,            
+            output: null,
+            hasil: null,
+            status:false,
+        },
+        methods: {
+           btnTebak(){
+            this.output = 1;
+            this.status = true;
+            if(this.input == this.tebakanya){                
+                this.hasil = 'benar';                
+            }else {                
+                this.kesempatan--;
+                if(this.kesempatan==0){
+                    this.hasil = 'kesempatanHabis';                                       
+                }else {
+                    this.hasil = 'cobalagi';
+                }
+            }       
+           },
+           cobaLagi(){
+                this.status = false;
+                this.output = 0;             
+           },
+           reset(){
+               location.reload();
+           },
+           ngecit(){
+               console.log(this.tebakanya);
+           }
+        },
+    });
+
+    // Vue Footer
+    new Vue({
+        el: "#identity",
+        data: {
+            blesly:{
+                name:'Gerardo Leonel Blesly Lontaan',
+                npm:'180709880',
+                kelas: 'Kelas E',
+            },
+        },
+    });
+
+</script>
+</html>
